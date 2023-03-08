@@ -1,0 +1,20 @@
+{
+  "_id": "String",
+  "userId": "String",
+  "name": "String",
+  "macros": {
+    "kcal": "Number",
+    "protein": "Number",
+    "totalCarb": "Number",
+    "totalFat": "Number"
+  },
+  "foods": [
+    {
+      "foodId": "String",
+      "servingName": "String",
+      "numServings": "Number",
+      "quantityMetric": "Number"
+    }
+  ],
+  "timestamp": "Date"
+}

@@ -1,0 +1,76 @@
+GET http://localhost:8001/food/6408af8874a2605e41f46253
+###
+
+GET http://localhost:8001/food/?search=kit
+###
+
+GET http://localhost:8001/food/6
+###
+
+GET http://localhost:8001/food/73eeb66ae435d8588af49305
+###
+
+
+GET http://localhost:8001/food/?barcode=072730331020
+###
+
+
+GET http://localhost:8001/food/?barcode=072730331022
+###
+
+GET http://localhost:8001/food/?barcode=072730331020&query=apple
+###
+
+GET http://localhost:8001/food/?test=apple
+
+###
+
+POST http://localhost:8001/food
+Content-Type:  application/json
+
+{
+    "name": "Test Food",
+    "brandOwner": "Test Brand Owner",
+    "brandName": "Test Brand Name",
+    "barcode": "123456789012",
+    "userId": "6407f1e1dc4ab79882933fe1",
+    "servingQuantity": 1,
+    "servingQuantityUnit": "g",
+    "servingName": "1 slice",
+    "nutritionalContent": {
+        "kcal": 10,
+        "totalFat": null,
+        "saturatedFat": null,
+        "transFat": null,
+        "polyunsaturatedFat": null,
+        "monounsaturatedFat": null,
+        "cholesterol": null,
+        "sodium": null,
+        "totalCarb": null,
+        "dietaryFiber": null,
+        "totalSugar": null,
+        "addedSugar": null,
+        "sugarAlcohols": null,
+        "protein": null,
+        "vitaminD": null,
+        "calcium": null,
+        "iron": null,
+        "potassium": null,
+        "vitaminA": null,
+        "vitaminC": null,
+        "vitaminE": null,
+        "thiamin": null,
+        "riboflavin": null,
+        "niacin": null,
+        "vitaminB6": null,
+        "folate": null,
+        "vitaminB12": null,
+        "biotin": null,
+        "pantothenicAcid": null,
+        "phosphorus": null,
+        "iodine": null,
+        "magnesium": null,
+        "selenium": null
+    },
+    "isVerified": false
+}

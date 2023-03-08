@@ -1,0 +1,143 @@
+{
+  "_id": "String",
+  "userId": "String",
+  "timestamp": "Date",
+  "numLogs": "Number",
+  "meal1": {
+    "displayName": "String",
+    "foodLogs": [
+      {
+        "foodId": "String",
+        "servingName": "String",
+        "numServing": "Number",
+        "quantityMetric": "Number"
+      }
+    ],
+    "recipeLogs": [
+      {
+        "recipeId": "String",
+        "numServing": "Number"
+      }
+    ]
+  },
+  "meal2": {
+    "displayName": "String",
+    "foodLogs": [
+      {
+        "foodId": "String",
+        "servingName": "String",
+        "numServing": "Number",
+        "quantityMetric": "Number"
+      }
+    ],
+    "recipeLogs": [
+      {
+        "recipeId": "String",
+        "numServing": "Number"
+      }
+    ]
+  },
+  "meal3": {
+    "displayName": "String",
+    "foodLogs": [
+      {
+        "foodId": "String",
+        "servingName": "String",
+        "numServing": "Number",
+        "quantityMetric": "Number"
+      }
+    ],
+    "recipeLogs": [
+      {
+        "recipeId": "String",
+        "numServing": "Number"
+      }
+    ]
+  },
+  "meal4": {
+    "displayName": "String",
+    "foodLogs": [
+      {
+        "foodId": "String",
+        "servingName": "String",
+        "numServing": "Number",
+        "quantityMetric": "Number"
+      }
+    ],
+    "recipeLogs": [
+      {
+        "recipeId": "String",
+        "numServing": "Number"
+      }
+    ]
+  },
+  "meal5": {
+    "displayName": "String",
+    "foodLogs": [
+      {
+        "foodId": "String",
+        "servingName": "String",
+        "numServing": "Number",
+        "quantityMetric": "Number"
+      }
+    ],
+    "recipeLogs": [
+      {
+        "recipeId": "String",
+        "numServing": "Number"
+      }
+    ]
+  },
+  "meal6": {
+    "displayName": "String",
+    "foodLogs": [
+      {
+        "foodId": "String",
+        "servingName": "String",
+        "numServing": "Number",
+        "quantityMetric": "Number"
+      }
+    ],
+    "recipeLogs": [
+      {
+        "recipeId": "String",
+        "numServing": "Number"
+      }
+    ]
+  },
+  "exercise": {
+    "strengthLogs": [
+        {
+            "exerciseId": "String",
+            "sets": "Number",
+            "reps": "Number",
+            "weightKg": "Number"
+        }
+    ],
+    "cardioLogs": [
+        {
+            "exerciseId": "String",
+            "durationMinutes": "Number" 
+        }
+    ],
+    "workoutLogs": [
+        {
+          "workoutId": "String",
+          "strengthExercises": [
+            {
+              "exerciseId": "String",
+              "sets": "Number",
+              "reps": "Number",
+              "weightKg": "Number"
+            }
+          ],
+          "cardioExercises": [
+            {
+              "exerciseId": "String",
+              "durationMinutes": "Number"
+            }
+          ]
+        }
+    ]
+  }
+}
