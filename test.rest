@@ -1,7 +1,7 @@
-GET http://localhost:8001/food/6408af8874a2605e41f46253
+GET http://localhost:8001/food/6407a0ba694fa2f8499aed86
 ###
 
-GET http://localhost:8001/food/?search=kit
+GET http://localhost:8001/food/?search=apple
 ###
 
 GET http://localhost:8001/food/6

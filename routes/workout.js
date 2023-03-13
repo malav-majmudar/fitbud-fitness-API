@@ -64,6 +64,33 @@ router.post("/", async (request, response) => {
   }
 });
 
+router.patch("/:workoutId", async (request, response) => {
+  console.log("Got Request");
+  console.log(request.body);
+
+  try {
+    if (request.params.workoutId.length != 24) {
+      response.status(400).json({ message: "Invalid ID" });
+    }
+
+    const updateWorkout = {
+      name: request.body.name,
+      strengthExercises: request.body.strengthExercises,
+      cardioExercises: request.body.cardioExercises,
+      timestamp: Date.now(),
+    };
+
+    const updatedWorkout = await Workout.findByIdAndUpdate(
+      request.params.workoutId,
+      updateWorkout
+    );
+    response.status(200).json(updatedWorkout);
+    console.log(updatedWorkout);
+  } catch (err) {
+    response.status(500).json({ message: err.message });
+  }
+});
+
 router.delete("/:workoutId", async (request, response) => {
   try {
     if (request.params.workoutId.length != 24) {

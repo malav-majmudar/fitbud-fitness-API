@@ -14,7 +14,7 @@ router.get("/:exerciseId", async (request, response) => {
       );
 
       if (exercise === null) {
-        response.status(404).json({ message: "Food Not Found" });
+        response.status(404).json({ message: "Exercise Not Found" });
       } else {
         response.status(200);
         response.send(exercise);
@@ -32,7 +32,7 @@ router.get("/", async (request, response) => {
   if (request.query.search) {
     try {
       const exercises = await Strength_exercise.find({
-        name: {$regex: `\\b${request.query.search}\\b` }
+        name: { $regex: new RegExp("\\b" + request.query.search + "\\b", "i") },
       });
       if (exercises === null || exercises.length === 0) {
         response.status(404).json({ message: "No Exercises Found" });

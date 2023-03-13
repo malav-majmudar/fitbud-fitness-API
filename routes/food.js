@@ -32,20 +32,23 @@ router.get("/", async (request, response) => {
     try {
       console.log("Got Request");
       const foods = await Food.find({
-        name: { $regex: new RegExp("\\b" + request.query.search + "\\b", "i") },
-      })
-        .select({
-          _id: 1,
-          name: 1,
-          isVerified: 1,
-        })
-        .limit(50);
+        name: {
+          $regex: new RegExp("\\b" + request.query.search + "\\b", "i"),
+        },
+      }).select({
+        _id: 1,
+        name: 1,
+        brandOwner: 1,
+        brandName: 1,
+        isVerified: 1,
+      });
+      //.limit(250);
       if (foods === null || foods.length === 0) {
         response.status(404).json({ message: "No Foods Found" });
       } else {
         console.log(foods);
         response.status(200);
-        response.send(foods.sort((a, b) => a.last_nom - b.last_nom));
+        response.send(foods.sort((a, b) => a.name.length - b.name.length));
       }
     } catch (e) {
       response.status(500).json({ message: "Internal Error" });

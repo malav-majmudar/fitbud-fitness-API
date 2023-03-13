@@ -1,4 +1,5 @@
 const express = require("express");
+const { update } = require("../models/foodModel");
 const router = express.Router();
 
 const Recipe = require("../models/recipeModel");
@@ -60,6 +61,34 @@ router.post("/", async (request, response) => {
     const newRecipe = await recipe.save();
     response.status(201).json(newRecipe);
     console.log(newRecipe);
+  } catch (err) {
+    response.status(500).json({ message: err.message });
+  }
+});
+
+router.patch("/:recipeId", async (request, response) => {
+  console.log("Got Request");
+  console.log(request.body);
+
+  try {
+    if (request.params.recipeId.length != 24) {
+      response.status(400).json({ message: "Invalid ID" });
+    }
+
+    const updateRecipe = {
+      name: request.body.name,
+      numServings: request.body.numServings,
+      macros: request.body.macros,
+      ingredients: request.body.ingredients,
+      timestamp: Date.now(),
+    };
+
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      request.params.recipeId,
+      updateRecipe
+    );
+    response.status(200).json(updatedRecipe);
+    console.log(updatedRecipe);
   } catch (err) {
     response.status(500).json({ message: err.message });
   }
