@@ -1,5 +1,7 @@
 .env
 node_modules
 *.rest
-*.json
+*.py
+*.txt
+forum.json
 models/*.json
