@@ -32,7 +32,7 @@ router.get("/", async (request, response) => {
     try {
       console.log("Got Request");
       const search = request.query.search.toUpperCase();
-      const foods = await keywordSeach(search)
+      const foods = await keywordSeach(search);
       if (foods === null || foods.length === 0) {
         response.status(404).json({ message: "No Foods Found" });
       } else {
@@ -112,7 +112,7 @@ async function keywordSeach(search) {
                 query: search,
                 score: {
                   boost: {
-                    value: 7,
+                    value: 70,
                   },
                 },
               },
@@ -121,9 +121,12 @@ async function keywordSeach(search) {
               text: {
                 path: "name",
                 query: search,
+                fuzzy: {
+                  maxEdits: 1,
+                },
                 score: {
                   boost: {
-                    value: 10,
+                    value: 100,
                   },
                 },
               },
@@ -132,6 +135,9 @@ async function keywordSeach(search) {
               text: {
                 path: { value: "name", multi: "standard" },
                 query: search,
+                fuzzy: {
+                  maxEdits: 2,
+                },
                 score: {
                   boost: {
                     value: 1,
@@ -145,7 +151,7 @@ async function keywordSeach(search) {
                 query: search,
                 score: {
                   boost: {
-                    value: 5,
+                    value: 50,
                   },
                 },
               },
@@ -157,9 +163,12 @@ async function keywordSeach(search) {
                   { value: "brandOwner", multi: "standard" },
                 ],
                 query: search,
+                fuzzy: {
+                  maxEdits: 2,
+                },
                 score: {
                   boost: {
-                    value: 1,
+                    value: 0.5,
                   },
                 },
               },
