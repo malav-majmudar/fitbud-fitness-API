@@ -32,7 +32,7 @@ router.get("/", async (request, response) => {
     try {
       console.log("Got Request");
       const search = request.query.search.toUpperCase();
-      const foods = await keywordSeach(search);
+      const foods = await keywordSearch(search);
       if (foods === null || foods.length === 0) {
         response.status(404).json({ message: "No Foods Found" });
       } else {
@@ -99,7 +99,7 @@ router.post("/", async (request, response) => {
   }
 });
 
-async function keywordSeach(search) {
+async function keywordSearch(search) {
   const foods = await Food.aggregate([
     {
       $search: {
@@ -187,7 +187,7 @@ async function keywordSeach(search) {
       },
     },
     {
-      $limit: 250,
+      $limit: 50,
     },
   ]);
   return foods;
