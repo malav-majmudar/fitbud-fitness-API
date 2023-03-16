@@ -31,24 +31,14 @@ router.get("/", async (request, response) => {
   if (request.query.search) {
     try {
       console.log("Got Request");
-      const foods = await Food.find({
-        name: {
-          $regex: new RegExp("\\b" + request.query.search + "\\b", "i"),
-        },
-      }).select({
-        _id: 1,
-        name: 1,
-        brandOwner: 1,
-        brandName: 1,
-        isVerified: 1,
-      });
-      //.limit(250);
+      const search = request.query.search.toUpperCase();
+      const foods = await keywordSeach(search)
       if (foods === null || foods.length === 0) {
         response.status(404).json({ message: "No Foods Found" });
       } else {
         console.log(foods);
         response.status(200);
-        response.send(foods.sort((a, b) => a.name.length - b.name.length));
+        response.send(foods);
       }
     } catch (e) {
       response.status(500).json({ message: "Internal Error" });
@@ -108,5 +98,90 @@ router.post("/", async (request, response) => {
     response.status(500).send({ message: err.message });
   }
 });
+
+async function keywordSeach(search) {
+  const foods = await Food.aggregate([
+    {
+      $search: {
+        index: "foodSearch",
+        compound: {
+          should: [
+            {
+              autocomplete: {
+                path: "name",
+                query: search,
+                score: {
+                  boost: {
+                    value: 7,
+                  },
+                },
+              },
+            },
+            {
+              text: {
+                path: "name",
+                query: search,
+                score: {
+                  boost: {
+                    value: 10,
+                  },
+                },
+              },
+            },
+            {
+              text: {
+                path: { value: "name", multi: "standard" },
+                query: search,
+                score: {
+                  boost: {
+                    value: 1,
+                  },
+                },
+              },
+            },
+            {
+              text: {
+                path: ["brandName", "brandOwner"],
+                query: search,
+                score: {
+                  boost: {
+                    value: 5,
+                  },
+                },
+              },
+            },
+            {
+              text: {
+                path: [
+                  { value: "brandName", multi: "standard" },
+                  { value: "brandOwner", multi: "standard" },
+                ],
+                query: search,
+                score: {
+                  boost: {
+                    value: 1,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        brandOwner: 1,
+        brandName: 1,
+        isVerified: 1,
+      },
+    },
+    {
+      $limit: 250,
+    },
+  ]);
+  return foods;
+}
 
 module.exports = router;
