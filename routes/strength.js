@@ -4,7 +4,6 @@ const router = express.Router();
 const Strength_exercise = require("../models/strengthExerciseModel");
 
 router.get("/:exerciseId", async (request, response) => {
-  console.log("Got request");
   try {
     if (request.params.exerciseId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });

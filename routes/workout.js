@@ -45,8 +45,6 @@ router.get("/", async (request, response) => {
 });
 
 router.post("/", async (request, response) => {
-  console.log("Got Request");
-  console.log(request.body);
   const workout = new Workout({
     userId: request.body.userId,
     name: request.body.name,
@@ -65,8 +63,6 @@ router.post("/", async (request, response) => {
 });
 
 router.patch("/:workoutId", async (request, response) => {
-  console.log("Got Request");
-
   try {
     if (request.params.workoutId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });

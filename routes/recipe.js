@@ -25,7 +25,6 @@ router.get("/:recipeId", async (request, response) => {
 });
 
 router.get("/", async (request, response) => {
-  console.log("Got Request");
   if (request.query.userId) {
     try {
       const recipes = await Recipe.find({ userId: request.query.userId });
@@ -47,7 +46,6 @@ router.get("/", async (request, response) => {
 });
 
 router.post("/", async (request, response) => {
-  console.log("Got Request");
   console.log(request.body);
   const recipe = new Recipe({
     userId: request.body.userId,
@@ -67,8 +65,6 @@ router.post("/", async (request, response) => {
 });
 
 router.patch("/:recipeId", async (request, response) => {
-  console.log("Got Request");
-
   try {
     if (request.params.workoutId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });
@@ -101,7 +97,6 @@ router.patch("/:recipeId", async (request, response) => {
 });
 
 router.delete("/:recipeId", async (request, response) => {
-  console.log("Got Request");
   try {
     if (request.params.recipeId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });

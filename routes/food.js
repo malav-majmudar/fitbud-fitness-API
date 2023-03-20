@@ -5,7 +5,6 @@ const Food = require("../models/foodModel");
 
 // GET by food ID
 router.get("/:foodId", async (request, response) => {
-  console.log("Got request");
   try {
     if (request.params.foodId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });
@@ -30,7 +29,6 @@ router.get("/:foodId", async (request, response) => {
 router.get("/", async (request, response) => {
   if (request.query.search) {
     try {
-      console.log("Got Request");
       const search = request.query.search.toUpperCase();
       const foods = await keywordSearch(search);
       if (foods === null || foods.length === 0) {
@@ -77,7 +75,6 @@ router.get("/", async (request, response) => {
 
 // POST create food
 router.post("/", async (request, response) => {
-  console.log("Got Request");
   const food = new Food({
     name: request.body.name,
     brandOwner: request.body.brandOwner,
