@@ -66,7 +66,6 @@ router.post("/", async (request, response) => {
 
 router.patch("/:workoutId", async (request, response) => {
   console.log("Got Request");
-  console.log(request.body);
 
   try {
     if (request.params.workoutId.length != 24) {
@@ -80,12 +79,19 @@ router.patch("/:workoutId", async (request, response) => {
       timestamp: Date.now(),
     };
 
-    const updatedWorkout = await Workout.findByIdAndUpdate(
-      request.params.workoutId,
-      updateWorkout
-    );
-    response.status(200).json(updatedWorkout);
-    console.log(updatedWorkout);
+    const workout = await Workout.findById(request.params.workoutId);
+    if (workout === null) {
+      response.status(404).json({ message: "Workout Not Found" });
+    } else if (workout.userId !== request.body.userId) {
+      response.status(401).json({ message: "User not Authorized" });
+    } else {
+      const updatedWorkout = await Workout.findByIdAndUpdate(
+        request.params.workoutId,
+        updateWorkout
+      );
+      response.status(200).json(updatedWorkout);
+      console.log(updatedWorkout);
+    }
   } catch (err) {
     response.status(500).json({ message: err.message });
   }

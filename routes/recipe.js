@@ -68,10 +68,9 @@ router.post("/", async (request, response) => {
 
 router.patch("/:recipeId", async (request, response) => {
   console.log("Got Request");
-  console.log(request.body);
 
   try {
-    if (request.params.recipeId.length != 24) {
+    if (request.params.workoutId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });
     }
 
@@ -83,12 +82,19 @@ router.patch("/:recipeId", async (request, response) => {
       timestamp: Date.now(),
     };
 
-    const updatedRecipe = await Recipe.findByIdAndUpdate(
-      request.params.recipeId,
-      updateRecipe
-    );
-    response.status(200).json(updatedRecipe);
-    console.log(updatedRecipe);
+    const recipe = await Workout.findById(request.params.workoutId);
+    if (recipe === null) {
+      response.status(404).json({ message: "Workout Not Found" });
+    } else if (recipe.userId !== request.body.userId) {
+      response.status(401).json({ message: "User not Authorized" });
+    } else {
+      const updatedRecipe = await Recipe.findByIdAndUpdate(
+        request.params.recipeId,
+        updateRecipe
+      );
+      response.status(200).json(updatedRecipe);
+      console.log(updateRecipe);
+    }
   } catch (err) {
     response.status(500).json({ message: err.message });
   }
