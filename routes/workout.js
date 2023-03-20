@@ -115,4 +115,26 @@ router.delete("/:workoutId", async (request, response) => {
   }
 });
 
+router.delete("/", async (request, response) => {
+  try {
+    if (request.query.userId.length != 24) {
+      response.status(400).json({ message: "Invalid UserId" });
+    } else {
+      const workouts = await Workout.deleteMany({
+        userId: request.query.userId,
+      });
+      console.log(workouts);
+      if (workouts === null) {
+        response.status(404).json({ message: "Recipes Not Found" });
+      } else {
+        response.status(200);
+        response.send(workouts);
+      }
+    }
+  } catch (e) {
+    response.status(500).json({ message: "Internal Error" });
+    console.log(e);
+  }
+});
+
 module.exports = router;

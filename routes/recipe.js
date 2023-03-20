@@ -101,15 +101,35 @@ router.delete("/:recipeId", async (request, response) => {
     if (request.params.recipeId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
-      const recipe = await Recipe.deleteOne({
-        _id: request.params.recipeId,
-      });
+      const recipe = await Recipe.findByIdAndDelete(request.params.recipeId);
       console.log(recipe);
       if (recipe === null) {
         response.status(404).json({ message: "Recipe Not Found" });
       } else {
         response.status(200);
         response.send(recipe);
+      }
+    }
+  } catch (e) {
+    response.status(500).json({ message: "Internal Error" });
+    console.log(e);
+  }
+});
+
+router.delete("/", async (request, response) => {
+  try {
+    if (request.query.userId.length != 24) {
+      response.status(400).json({ message: "Invalid UserId" });
+    } else {
+      const recipes = await Recipe.deleteMany({
+        userId: request.query.userId,
+      });
+      console.log(recipes);
+      if (recipes === null) {
+        response.status(404).json({ message: "Recipes Not Found" });
+      } else {
+        response.status(200);
+        response.send(recipes);
       }
     }
   } catch (e) {

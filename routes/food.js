@@ -96,6 +96,26 @@ router.post("/", async (request, response) => {
   }
 });
 
+router.patch("/", async (request, response) => {
+  try {
+    if (request.params.foodId.length != 24) {
+      response.status(400).json({ message: "Invalid ID" });
+    }
+
+    const updateFood = {
+      userId: null,
+    };
+    const updatedFood = await Food.updateMany(
+      { userId: request.body.userId },
+      updateFood
+    );
+    response.status(200).json(updatedFood);
+    console.log(updatedFood);
+  } catch (err) {
+    response.status(500).json({ message: err.message });
+  }
+});
+
 async function keywordSearch(search) {
   const foods = await Food.aggregate([
     {
