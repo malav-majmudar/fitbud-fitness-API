@@ -43,6 +43,7 @@ router.get("/", async (request, response) => {
                     query: search,
                     fuzzy: {
                       maxEdits: 1,
+                      maxExpansions: 20,
                     },
                     score: {
                       boost: {
@@ -60,7 +61,19 @@ router.get("/", async (request, response) => {
                     },
                     score: {
                       boost: {
-                        value: 50,
+                        value: 70,
+                      },
+                    },
+                  },
+                },
+                {
+                  autocomplete: {
+                    path: "name",
+                    query: search,
+                    tokenOrder: "sequential",
+                    score: {
+                      boost: {
+                        value: 90,
                       },
                     },
                   },
