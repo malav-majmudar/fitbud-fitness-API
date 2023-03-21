@@ -30,9 +30,46 @@ router.get("/", async (request, response) => {
   console.log(request.query.search);
   if (request.query.search) {
     try {
-      const exercises = await Strength_exercise.find({
-        name: { $regex: new RegExp("\\b" + request.query.search + "\\b", "i") },
-      });
+      const search = request.query.search;
+      const exercises = await Strength_exercise.aggregate([
+        {
+          $search: {
+            index: "searchStrength",
+            compound: {
+              should: [
+                {
+                  text: {
+                    path: "name",
+                    query: search,
+                    fuzzy: {
+                      maxEdits: 1,
+                    },
+                    score: {
+                      boost: {
+                        value: 100,
+                      },
+                    },
+                  },
+                },
+                {
+                  text: {
+                    path: { value: "name", multi: "standard" },
+                    query: search,
+                    fuzzy: {
+                      maxEdits: 2,
+                    },
+                    score: {
+                      boost: {
+                        value: 50,
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ]);
       if (exercises === null || exercises.length === 0) {
         response.status(404).json({ message: "No Exercises Found" });
       } else {
