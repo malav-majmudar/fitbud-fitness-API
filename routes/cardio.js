@@ -33,7 +33,7 @@ router.get("/", async (request, response) => {
       const exercises = await Cardio_exercise.aggregate([
         {
           $search: {
-            index: "searchStrength",
+            index: "cardioSearch",
             compound: {
               should: [
                 {
