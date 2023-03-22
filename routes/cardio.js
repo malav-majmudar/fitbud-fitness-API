@@ -28,6 +28,7 @@ router.get("/:exerciseId", async (request, response) => {
 
 router.get("/", async (request, response) => {
   console.log(request.query.search);
+  const search = request.query.search
   if (request.query.search) {
     try {
       const exercises = await Cardio_exercise.aggregate([
