@@ -44,12 +44,14 @@ router.get("/", async (request, response) => {
     }
   } else if (request.query.barcode) {
     try {
-      const food = await Food.find({ barcode: request.query.barcode });
-      if (food === null || food.length === 0) {
+      const foodID = await Food.find({ barcode: request.query.barcode }).select({
+        _id: 1,
+      });
+      if (foodID === null || foodID.length === 0) {
         response.status(404).json({ message: "Food Not Found" });
       } else {
         response.status(200);
-        response.send(food[0]);
+        response.send(foodID[0]);
       }
     } catch (e) {
       response.status(500).json({ message: "Internal Error" });
