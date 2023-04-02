@@ -116,7 +116,7 @@ router.patch("/", async (request, response) => {
       { userId: request.body.userId },
       updateFood
     );
-    response.status(200).json(updatedFood);
+    response.status(200).send({ message: "Foods Successfully Updated" });
     console.log(updatedFood);
   } catch (err) {
     response.status(500).json({ message: err.message });

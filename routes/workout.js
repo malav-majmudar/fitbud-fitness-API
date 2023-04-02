@@ -87,9 +87,10 @@ router.patch("/:workoutId", async (request, response) => {
         request.params.workoutId,
         updateWorkout
       );
-      response
-        .status(200)
-        .send({ message: "Workout Successfully Updated", _id: updatedWorkout._id });
+      response.status(200).send({
+        message: "Workout Successfully Updated",
+        _id: updatedWorkout._id,
+      });
       console.log(updatedWorkout);
     }
   } catch (err) {
@@ -110,7 +111,7 @@ router.delete("/:workoutId", async (request, response) => {
         response.status(404).json({ message: "Workout Not Found" });
       } else {
         response.status(200);
-        response.send(workout);
+        response.send({ message: "Workout Successfully Deleted" });
       }
     }
   } catch (e) {
@@ -132,7 +133,7 @@ router.delete("/", async (request, response) => {
         response.status(404).json({ message: "Recipes Not Found" });
       } else {
         response.status(200);
-        response.send(workouts);
+        response.send({ message: "Workouts Successfully Updated" });
       }
     }
   } catch (e) {

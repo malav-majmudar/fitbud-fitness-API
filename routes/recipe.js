@@ -115,7 +115,7 @@ router.delete("/:recipeId", async (request, response) => {
         response.status(404).json({ message: "Recipe Not Found" });
       } else {
         response.status(200);
-        response.send(recipe);
+        response.send({ message: "Recipe Successfully Deleted" });
       }
     }
   } catch (e) {
@@ -137,7 +137,7 @@ router.delete("/", async (request, response) => {
         response.status(404).json({ message: "Recipes Not Found" });
       } else {
         response.status(200);
-        response.send(recipes);
+        response.send({ message: "Recipes Successfully Updated" });
       }
     }
   } catch (e) {
