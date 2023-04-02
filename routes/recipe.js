@@ -1,5 +1,5 @@
 const express = require("express");
-const { update } = require("../models/foodModel");
+
 const router = express.Router();
 
 const Recipe = require("../models/recipeModel");
@@ -57,7 +57,10 @@ router.post("/", async (request, response) => {
 
   try {
     const newRecipe = await recipe.save();
-    response.status(201).json(newRecipe);
+    response.status(201).send({
+      message: "Recipe Successfully Created",
+      _id: newRecipe._id,
+    });
     console.log(newRecipe);
   } catch (err) {
     response.status(500).json({ message: err.message });
@@ -66,30 +69,35 @@ router.post("/", async (request, response) => {
 
 router.patch("/:recipeId", async (request, response) => {
   try {
-    if (request.params.workoutId.length != 24) {
+    if (request.params.recipeId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });
     }
 
-    const updateRecipe = {
-      name: request.body.name,
-      numServings: request.body.numServings,
-      macros: request.body.macros,
-      ingredients: request.body.ingredients,
-      timestamp: Date.now(),
-    };
+    const recipe = await Recipe.findById(request.params.recipeId);
 
-    const recipe = await Workout.findById(request.params.workoutId);
     if (recipe === null) {
       response.status(404).json({ message: "Workout Not Found" });
     } else if (recipe.userId !== request.body.userId) {
       response.status(401).json({ message: "User not Authorized" });
     } else {
+      const updateRecipe = {
+        name: request.body.name || recipe.name,
+        numServings: request.body.numServings || recipe.numServings,
+        macros: request.body.macros || recipe.macros,
+        ingredients: request.body.ingredients || recipe.ingredients,
+        timestamp: Date.now(),
+      };
+      console.log(updateRecipe);
       const updatedRecipe = await Recipe.findByIdAndUpdate(
         request.params.recipeId,
         updateRecipe
       );
-      response.status(200).json(updatedRecipe);
-      console.log(updateRecipe);
+      response
+        .status(200)
+        .send({
+          message: "Recipe Successfully Updated",
+          _id: updatedRecipe._id,
+        });
     }
   } catch (err) {
     response.status(500).json({ message: err.message });

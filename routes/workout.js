@@ -55,7 +55,9 @@ router.post("/", async (request, response) => {
 
   try {
     const newWorkout = await workout.save();
-    response.status(201).json(newWorkout);
+    response
+      .status(201)
+      .send({ message: "Workout Successfully Created", _id: newWorkout._id });
     console.log(newWorkout);
   } catch (err) {
     response.status(500).json({ message: err.message });
@@ -85,7 +87,9 @@ router.patch("/:workoutId", async (request, response) => {
         request.params.workoutId,
         updateWorkout
       );
-      response.status(200).json(updatedWorkout);
+      response
+        .status(200)
+        .send({ message: "Workout Successfully Updated", _id: newWorkout._id });
       console.log(updatedWorkout);
     }
   } catch (err) {

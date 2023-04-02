@@ -94,9 +94,10 @@ router.post("/", async (request, response) => {
 
   try {
     const newFood = await food.save();
-    response
-      .status(201)
-      .send({ message: "Food succesfully added to the database", _id: newFood._id});
+    response.status(201).send({
+      message: "Food Successfully Created",
+      _id: newFood._id,
+    });
   } catch (err) {
     response.status(500).send({ message: err.message });
   }
