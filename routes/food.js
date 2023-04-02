@@ -44,9 +44,11 @@ router.get("/", async (request, response) => {
     }
   } else if (request.query.barcode) {
     try {
-      const foodID = await Food.find({ barcode: request.query.barcode }).select({
-        _id: 1,
-      });
+      const foodID = await Food.find({ barcode: request.query.barcode }).select(
+        {
+          _id: 1,
+        }
+      );
       if (foodID === null || foodID.length === 0) {
         response.status(404).json({ message: "Food Not Found" });
       } else {
@@ -92,7 +94,9 @@ router.post("/", async (request, response) => {
 
   try {
     const newFood = await food.save();
-    response.status(201).send(newFood);
+    response
+      .status(201)
+      .send({ message: "Food succesfully added to the database", _id: newFood._id});
   } catch (err) {
     response.status(500).send({ message: err.message });
   }
