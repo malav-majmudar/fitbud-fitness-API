@@ -89,7 +89,7 @@ router.patch("/:workoutId", async (request, response) => {
       );
       response
         .status(200)
-        .send({ message: "Workout Successfully Updated", _id: newWorkout._id });
+        .send({ message: "Workout Successfully Updated", _id: updatedWorkout._id });
       console.log(updatedWorkout);
     }
   } catch (err) {
