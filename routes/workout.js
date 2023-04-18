@@ -1,11 +1,15 @@
 const express = require("express");
-const router = express.Router();
+const mongoose = require("mongoose");
 
+const router = express.Router();
 const Workout = require("../models/workoutModel");
 
 router.get("/:workoutId", async (request, response) => {
   try {
-    if (request.params.workoutId.length != 24) {
+    if (
+      request.params.workoutId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.params.workoutId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
       const workout = await Workout.findById(request.params.workoutId);
@@ -66,7 +70,10 @@ router.post("/", async (request, response) => {
 
 router.patch("/:workoutId", async (request, response) => {
   try {
-    if (request.params.workoutId.length != 24) {
+    if (
+      request.params.workoutId.length != 2 ||
+      !mongoose.isObjectIdOrHexString(request.params.workoutId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     }
 
@@ -100,7 +107,10 @@ router.patch("/:workoutId", async (request, response) => {
 
 router.delete("/:workoutId", async (request, response) => {
   try {
-    if (request.params.workoutId.length != 24) {
+    if (
+      request.params.workoutId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.params.workoutId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
       const workout = await Workout.deleteOne({
@@ -122,7 +132,10 @@ router.delete("/:workoutId", async (request, response) => {
 
 router.delete("/", async (request, response) => {
   try {
-    if (request.query.userId.length != 24) {
+    if (
+      request.query.userId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.query.userId)
+    ) {
       response.status(400).json({ message: "Invalid UserId" });
     } else {
       const workouts = await Workout.deleteMany({

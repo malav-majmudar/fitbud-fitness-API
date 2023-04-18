@@ -5,7 +5,10 @@ const Strength_exercise = require("../models/strengthExerciseModel");
 
 router.get("/:exerciseId", async (request, response) => {
   try {
-    if (request.params.exerciseId.length != 24) {
+    if (
+      request.params.exerciseId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.params.exerciseId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
       const exercise = await Strength_exercise.findById(

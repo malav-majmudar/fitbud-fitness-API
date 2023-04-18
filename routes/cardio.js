@@ -1,11 +1,15 @@
 const express = require("express");
-const router = express.Router();
+const mongoose = require("mongoose");
 
+const router = express.Router();
 const Cardio_exercise = require("../models/cardioExerciseModel");
 
 router.get("/:exerciseId", async (request, response) => {
   try {
-    if (request.params.exerciseId.length != 24) {
+    if (
+      request.params.exerciseId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.params.exerciseId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
       const exercise = await Cardio_exercise.findById(
@@ -28,7 +32,7 @@ router.get("/:exerciseId", async (request, response) => {
 
 router.get("/", async (request, response) => {
   console.log(request.query.search);
-  const search = request.query.search
+  const search = request.query.search;
   if (request.query.search) {
     try {
       const exercises = await Cardio_exercise.aggregate([

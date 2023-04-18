@@ -1,12 +1,15 @@
 const express = require("express");
+const mongoose = require("mongoose");
 
 const router = express.Router();
-
 const Recipe = require("../models/recipeModel");
 
 router.get("/:recipeId", async (request, response) => {
   try {
-    if (request.params.recipeId.length != 24) {
+    if (
+      request.params.recipeId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.params.recipeId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
       const recipe = await Recipe.findById(request.params.recipeId);
@@ -69,7 +72,10 @@ router.post("/", async (request, response) => {
 
 router.patch("/:recipeId", async (request, response) => {
   try {
-    if (request.params.recipeId.length != 24) {
+    if (
+      request.params.recipeId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.params.recipeId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     }
 
@@ -92,12 +98,10 @@ router.patch("/:recipeId", async (request, response) => {
         request.params.recipeId,
         updateRecipe
       );
-      response
-        .status(200)
-        .send({
-          message: "Recipe Successfully Updated",
-          _id: updatedRecipe._id,
-        });
+      response.status(200).send({
+        message: "Recipe Successfully Updated",
+        _id: updatedRecipe._id,
+      });
     }
   } catch (err) {
     response.status(500).json({ message: err.message });
@@ -106,7 +110,10 @@ router.patch("/:recipeId", async (request, response) => {
 
 router.delete("/:recipeId", async (request, response) => {
   try {
-    if (request.params.recipeId.length != 24) {
+    if (
+      request.params.recipeId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.params.recipeId)
+    ) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
       const recipe = await Recipe.findByIdAndDelete(request.params.recipeId);
@@ -126,7 +133,10 @@ router.delete("/:recipeId", async (request, response) => {
 
 router.delete("/", async (request, response) => {
   try {
-    if (request.query.userId.length != 24) {
+    if (
+      request.query.userId.length != 24 ||
+      !mongoose.isObjectIdOrHexString(request.query.userId)
+    ) {
       response.status(400).json({ message: "Invalid UserId" });
     } else {
       const recipes = await Recipe.deleteMany({
