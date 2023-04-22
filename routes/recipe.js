@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const router = express.Router();
 const Recipe = require("../models/recipeModel");
+const Food = require("../models/foodModel");
 
 router.get("/:recipeId", async (request, response) => {
   try {
@@ -12,11 +13,22 @@ router.get("/:recipeId", async (request, response) => {
     ) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
-      const recipe = await Recipe.findById(request.params.recipeId);
+      let recipe = await Recipe.findById(request.params.recipeId);
       console.log(recipe);
       if (recipe === null) {
         response.sendStatus(404).json({ message: "Recipe Not Found" });
       } else {
+        recipe = recipe.toObject();
+
+        for (let i = 0; i < recipe.ingredients.length; i++) {
+          let ingredient = recipe.ingredients[i];
+
+          const food = await Food.findById(ingredient.foodId);
+          delete ingredient.foodId;
+          ingredient.food = food;
+          console.log(ingredient);
+          recipe.ingredients[i] = ingredient;
+        }
         response.status(200);
         response.send(recipe);
       }
@@ -49,14 +61,34 @@ router.get("/", async (request, response) => {
 });
 
 router.post("/", async (request, response) => {
-  console.log(request.body);
+  const ingredients = request.body.ingredients;
+  let kcal = 0,
+    carbs = 0,
+    fat = 0,
+    protein = 0;
+
+  for (let i = 0; i < ingredients.length; i++) {
+    const food = await Food.findById(ingredients[i].foodId);
+    kcal += food.nutritionalContent.kcal;
+    carbs += food.nutritionalContent.totalCarb;
+    fat += food.nutritionalContent.totalFat;
+    protein += food.nutritionalContent.protein;
+  }
+
   const recipe = new Recipe({
     userId: request.body.userId,
     name: request.body.name,
-    macros: request.body.macros,
+    macros: {
+      kcal: kcal,
+      protein: protein,
+      totalCarb: carbs,
+      totalFat: fat,
+    },
     ingredients: request.body.ingredients,
     timestamp: Date.now(),
   });
+
+  console.log(recipe);
 
   try {
     const newRecipe = await recipe.save();
