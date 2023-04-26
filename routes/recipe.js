@@ -78,6 +78,7 @@ router.post("/", async (request, response) => {
   const recipe = new Recipe({
     userId: request.body.userId,
     name: request.body.name,
+    numServings: request.body.numServings,
     macros: {
       kcal: kcal,
       protein: protein,
